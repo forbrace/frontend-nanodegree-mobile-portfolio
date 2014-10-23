@@ -2,7 +2,7 @@
 
 <a href="https://github.com/udacity/frontend-nanodegree-mobile-portfolio">Initial project assets</a>
 
-The challenge is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques descirbed up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
+The challenge is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques descirbed in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
 
 In order to deliver the fastest possible time to first render, we need to optimize three variables:
 
