@@ -447,7 +447,7 @@ window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
 var pizzasDiv = document.getElementById("randomPizzas");
-var pizzasStr = '';
+var pizzasStr = ''; // empty string
 for (var i = 2; i < 100; i++) {
   pizzasStr += pizzaElementGenerator(i);
 }
@@ -484,7 +484,7 @@ function updatePositions(e) {
   frame++;
   window.performance.mark("mark_start_frame");
   
-  // if scroll event then determine scrollTop otherwise scrollTop = 0
+  // if scroll event then cache scrollTop otherwise scrollTop = 0
   var scrollTop = (e.type === 'DOMContentLoaded') ? 0 : document.body.scrollTop;
   
   // invoke move items function
