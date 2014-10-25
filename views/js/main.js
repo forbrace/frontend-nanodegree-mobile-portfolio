@@ -454,7 +454,7 @@ for (var i = 2; i < 100; i++) {
 // give it a rest and finally insert pizzas menu
 setTimeout(function() {
   pizzasDiv.innerHTML = pizzasStr;
-},0);
+},100);
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
