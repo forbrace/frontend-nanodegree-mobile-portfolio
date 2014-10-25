@@ -358,7 +358,7 @@ var makeRandomPizza = function() {
   return pizza;
 }
 
-// returns a DOM element for each pizza
+// returns a DOM element as string for each pizza
 var pizzaElementGenerator = function(i) {
   return  '<div class="randomPizzaContainer" id="'+'pizza'+i+'" style="width: 33.33%;">'+
             '<div class="col-md-6">'+
@@ -424,6 +424,7 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     var randomPizzaContainers = document.querySelectorAll(".randomPizzaContainer");
+    
     // get dx and newwidth for 1st element only and then apply newwidth for the rest elements
     var dx = determineDx(randomPizzaContainers[0], size);
     var newwidth = (randomPizzaContainers[0].offsetWidth + dx) + 'px';
@@ -450,7 +451,10 @@ var pizzasStr = '';
 for (var i = 2; i < 100; i++) {
   pizzasStr += pizzaElementGenerator(i);
 }
-pizzasDiv.innerHTML = pizzasStr;
+// give it a rest and finally insert pizzas menu
+setTimeout(function() {
+  pizzasDiv.innerHTML = pizzasStr;
+},0);
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
@@ -480,17 +484,12 @@ function updatePositions(e) {
   frame++;
   window.performance.mark("mark_start_frame");
   
-  // I have no idea how to get scrolltop and aviod syncronous layout warning
+  // if scroll event then determine scrollTop otherwise scrollTop = 0
   var scrollTop = (e.type === 'DOMContentLoaded') ? 0 : document.body.scrollTop;
   
-  // console.log(typeof e === 'number');
+  // invoke move items function
+  moveItems(scrollTop);
   
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  }
-
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
   window.performance.mark("mark_end_frame");
@@ -500,12 +499,16 @@ function updatePositions(e) {
     logAverageFrame(timesToUpdatePosition);
   }
 }
-function onScroll(e) {
-  window.requestAnimationFrame(updatePositions);
-  // updatePositions(e);
+// move items left/right
+function moveItems(scrollTop) {
+  var items = document.querySelectorAll('.mover');
+  for (var i = 0; i < items.length; i++) {
+    var phase = Math.sin((scrollTop / 1250) + (i % 5));
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+  }
 }
 // runs updatePositions on scroll
-window.addEventListener('scroll', onScroll);
+window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function(e) {
@@ -517,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
     elem.src = "images/pizza.png";
     elem.height = "100";
     elem.width = "73";
-    elem.basicLeft = (i % cols) * s;
+    elem.basicLeft = (i % cols) * s; // nice idea!
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
